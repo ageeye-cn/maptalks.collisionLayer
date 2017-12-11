@@ -1,0 +1,33 @@
+{
+  "name": "maptalks.collisionLayer",
+  "version": "0.1.1",
+  "description": "A mouse coordinate plugin for maptalks.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "main": "dist/maptalks.collisionLayer.js",
+  "module": "dist/maptalks.collisionLayer.es.js",
+  "jsnext:main": "dist/maptalks.collisionLayer.es.js",
+  "files" : [
+    "dist/maptalks.collisionLayer.js",
+    "dist/maptalks.collisionLayer.min.js",
+    "dist/maptalks.collisionLayer.es.js"
+  ],
+  "scripts": {
+    "version": "gulp minify && git add -A dist",
+    "prepublish": "gulp minify"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.18.0",
+    "gulp": "^3.9.0",
+    "maptalks": ">=0.36.0",
+    "maptalks-build-helpers": "^0.4.2"
+  },
+  "peerDependencies": {
+    "maptalks": ">=0.36.0"
+  },
+  "dependencies": {}
+}
