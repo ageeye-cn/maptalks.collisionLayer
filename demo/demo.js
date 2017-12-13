@@ -9,4 +9,14 @@ const map = new maptalks.Map('map', {
         subdomains: ['1','2','3','4']
     })
 })
-const mouseCoordinate = new maptalks.MouseCoordinate().addTo(map)
+const layer = new maptalks.CollisionLayer('v').addTo(map)
+
+var extent = map.getExtent(),
+    min = extent.getMin(),
+    w = extent.getWidth(),
+    h = extent.getHeight(),
+    markers = [];
+for (var i = 0; i < 100; i++) {
+    markers.push(new maptalks.Marker([min.x + Math.random() * w, min.y + Math.random() * h]));
+}
+layer.addGeometry(markers)

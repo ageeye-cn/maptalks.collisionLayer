@@ -10,7 +10,7 @@
   "main": "dist/maptalks.collisionLayer.js",
   "module": "dist/maptalks.collisionLayer.es.js",
   "jsnext:main": "dist/maptalks.collisionLayer.es.js",
-  "files" : [
+  "files": [
     "dist/maptalks.collisionLayer.js",
     "dist/maptalks.collisionLayer.min.js",
     "dist/maptalks.collisionLayer.es.js"
@@ -29,5 +29,7 @@
   "peerDependencies": {
     "maptalks": ">=0.36.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "rbush": "^2.0.1"
+  }
 }
