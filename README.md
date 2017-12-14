@@ -2,7 +2,7 @@
 
 A marker collision plugin for [maptalks](http://maptalks.org/).
 
-[demo](https://ageeye-cn.github.io/maptalks.collisionLayer/demo/index.html)
+[demo](https://ageeye-cn.github.io/maptalks.collisionLayer//demo/index.html)
 
 # Usage
 
