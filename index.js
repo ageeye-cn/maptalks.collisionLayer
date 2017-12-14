@@ -18,11 +18,9 @@ export class CollisionLayer extends maptalks.VectorLayer {
         this._rbush = rbush()
         this._hideMarkers = null
     }
-
     onViewChange() {
         setTimeout(()=>this.updateCollision(), 0)
     }
-
     updateCollision() {
         this._rbush.clear()
         this._hideMarkers && this._hideMarkers.remove()

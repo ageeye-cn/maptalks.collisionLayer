@@ -8,6 +8,7 @@ A marker collision plugin for [maptalks](http://maptalks.org/) and uses [rbush](
 
 ```javascript
     var collisionLayer = new maptalks.CollisionLayer('layerName').addTo(map)
+    collisionLayer.updateCollision()
 ```
 
 # Options

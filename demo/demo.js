@@ -9,7 +9,7 @@ const map = new maptalks.Map('map', {
         subdomains: ['a','b','c','d']
     })
 })
-const layer = new maptalks.CollisionLayer('layerName').addTo(map)
+const collisionLayer = new maptalks.CollisionLayer('layerName').addTo(map)
 
 var extent = map.getExtent(),
     min = extent.getMin(),
@@ -19,4 +19,5 @@ var extent = map.getExtent(),
 for (var i = 0; i < 100; i++) {
     markers.push(new maptalks.Marker([min.x + Math.random() * w, min.y + Math.random() * h]));
 }
-layer.addGeometry(markers)
+collisionLayer.addGeometry(markers)
+collisionLayer.updateCollision()
