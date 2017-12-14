@@ -2,14 +2,14 @@ const map = new maptalks.Map('map', {
     center: [104,31],
     zoom: 5,
     attribution: {
-        content: '&copy; TianDiTu'
+        content: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>'
     },
     baseLayer: new maptalks.TileLayer('base', {
-        urlTemplate: 'http://t{s}.tianditu.cn/DataServer?T=ter_w&X={x}&Y={y}&L={z}',
-        subdomains: ['1','2','3','4']
+        urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        subdomains: ['a','b','c','d']
     })
 })
-const layer = new maptalks.CollisionLayer('v').addTo(map)
+const layer = new maptalks.CollisionLayer('layerName').addTo(map)
 
 var extent = map.getExtent(),
     min = extent.getMin(),
