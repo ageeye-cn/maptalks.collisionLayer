@@ -1,6 +1,6 @@
 # maptalks-collisionLayer
 
-A marker collision plugin for [maptalks](http://maptalks.org/).
+A marker collision plugin for [maptalks](http://maptalks.org/) and uses [rbush](https://github.com/mourner/rbush) library.
 
 [demo](https://ageeye-cn.github.io/maptalks.collisionLayer//demo/index.html)
 
