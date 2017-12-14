@@ -1,5 +1,5 @@
 import * as maptalks from 'maptalks'
-
+import rbush from 'rbush'
 
 const options = {
     activeId: null,
