@@ -32,7 +32,7 @@ export class CollisionLayer extends maptalks.VectorLayer {
                 return geometry.type === 'Point' && geometry
             })
 
-        if (activeGeometry){
+        if (activeGeometry && activeGeometry.type === 'Point'){
             this._rbush.insert(this.getMarkerBox(activeGeometry))
             activeGeometry.show()
         }

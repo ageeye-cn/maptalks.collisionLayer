@@ -67,7 +67,7 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
         });
 
 
-        if (activeGeometry) {
+        if (activeGeometry && activeGeometry.type === 'Point') {
             this._rbush.insert(this.getMarkerBox(activeGeometry));
             activeGeometry.show();
         }
