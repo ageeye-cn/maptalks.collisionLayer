@@ -19,7 +19,10 @@ export class CollisionLayer extends maptalks.VectorLayer {
     onAdd() {
         this.map.on('viewchange', this.onViewChange, this)
         this._rbush = rbush()
-        this._hidePoints = new maptalks.MultiPoint([], {id: this.options.hidePointsId, symbol: this.options.hidePointsSymbol})
+        this._hidePoints = new maptalks.MultiPoint([], {
+            id: this.options.hidePointsId,
+            symbol: this.options.hidePointsSymbol
+        })
     }
 
     onViewChange() {
@@ -27,11 +30,11 @@ export class CollisionLayer extends maptalks.VectorLayer {
     }
 
     updateCollision() {
-        if (!this.options.isCollision){
+        if (!this.options.isCollision) {
             return
         }
 
-        if (!this.getGeometryById(this.options.hidePointsId)){
+        if (!this.getGeometryById(this.options.hidePointsId)) {
             this.addGeometry(this._hidePoints)
         }
 
@@ -42,7 +45,7 @@ export class CollisionLayer extends maptalks.VectorLayer {
             activeGeometry = this.getGeometryById(activeId),
             markers = this.getMarkers()
 
-        if (activeGeometry) {
+        if (activeGeometry && activeGeometry.type === 'Point') {
             this._rbush.insert(this.getMarkerBox(activeGeometry))
             activeGeometry.show()
         }
@@ -64,10 +67,10 @@ export class CollisionLayer extends maptalks.VectorLayer {
             }
         })
 
-        if (isShowCollisionPoints){
+        if (isShowCollisionPoints) {
             this._hidePoints.setCoordinates(hidePoints)
             this._hidePoints.bringToBack()
-        }else{
+        } else {
             this._hidePoints.setCoordinates([])
         }
     }
@@ -83,47 +86,47 @@ export class CollisionLayer extends maptalks.VectorLayer {
         return {minX, maxX, minY, maxY}
     }
 
-    getMarkers(){
+    getMarkers() {
         return this.getGeometries(geometry => {
             return geometry.type === 'Point' && geometry
         })
     }
 
-    isShowCollisionPoints(){
+    isShowCollisionPoints() {
         return this.options.isShowCollisionPoints
     }
 
-    showCollisionPoints(){
+    showCollisionPoints() {
         this.options.isShowCollisionPoints = true
         this.updateCollision()
     }
 
-    hideCollisionPoints(){
+    hideCollisionPoints() {
         this.options.isShowCollisionPoints = false
         this.updateCollision()
     }
 
-    setActiveId(id){
+    setActiveId(id) {
         this.options.activeId = id
         this.updateCollision()
     }
 
-    enableCollision(){
+    enableCollision() {
         this.options.isCollision = true
         this.updateCollision()
     }
 
-    disableCollision(){
+    disableCollision() {
         this.options.isCollision = false
 
         this._hidePoints.setCoordinates([])
         const markers = this.getMarkers()
-        markers.forEach(marker=>{
+        markers.forEach(marker => {
             marker.show()
         })
     }
 
-    isCollision(){
+    isCollision() {
         return this.options.isCollision
     }
 }

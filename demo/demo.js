@@ -12,6 +12,8 @@ const map = new maptalks.Map('map', {
 
 const collisionLayer = new maptalks.CollisionLayer('layerName').addTo(map)
 
+collisionLayer.addGeometry(new maptalks.LineString([[104,31],[104,32]]))
+
 var extent = map.getExtent(),
     min = extent.getMin(),
     w = extent.getWidth(),

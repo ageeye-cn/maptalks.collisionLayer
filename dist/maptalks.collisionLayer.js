@@ -48,7 +48,10 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
     CollisionLayer.prototype.onAdd = function onAdd() {
         this.map.on('viewchange', this.onViewChange, this);
         this._rbush = rbush();
-        this._hidePoints = new maptalks.MultiPoint([], { id: this.options.hidePointsId, symbol: this.options.hidePointsSymbol });
+        this._hidePoints = new maptalks.MultiPoint([], {
+            id: this.options.hidePointsId,
+            symbol: this.options.hidePointsSymbol
+        });
     };
 
     CollisionLayer.prototype.onViewChange = function onViewChange() {
@@ -80,7 +83,7 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
             markers = this.getMarkers();
 
 
-        if (activeGeometry) {
+        if (activeGeometry && activeGeometry.type === 'Point') {
             this._rbush.insert(this.getMarkerBox(activeGeometry));
             activeGeometry.show();
         }
