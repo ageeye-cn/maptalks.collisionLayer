@@ -3,6 +3,9 @@ import rbush from 'rbush'
 
 const options = {
     activeId: null,
+    isCollision: true,
+    isShowCollisionPoints: true,
+    hidePointsId: 'hidePoints',
     hidePointsSymbol: {
         'markerType': 'ellipse',
         'markerFillOpacity': 0.3,
@@ -16,29 +19,36 @@ export class CollisionLayer extends maptalks.VectorLayer {
     onAdd() {
         this.map.on('viewchange', this.onViewChange, this)
         this._rbush = rbush()
-        this._hideMarkers = null
+        this._hidePoints = new maptalks.MultiPoint([], {id: this.options.hidePointsId, symbol: this.options.hidePointsSymbol})
     }
+
     onViewChange() {
-        setTimeout(()=>this.updateCollision(), 0)
+        setTimeout(() => this.updateCollision(), 0)
     }
+
     updateCollision() {
+        if (!this.options.isCollision){
+            return
+        }
+
+        if (!this.getGeometryById(this.options.hidePointsId)){
+            this.addGeometry(this._hidePoints)
+        }
+
         this._rbush.clear()
-        this._hideMarkers && this._hideMarkers.remove()
 
         const hidePoints = [],
-            {activeId, hidePointsSymbol} = this.options,
+            {activeId, isShowCollisionPoints} = this.options,
             activeGeometry = this.getGeometryById(activeId),
-            markers = this.getGeometries(geometry => {
-                return geometry.type === 'Point' && geometry
-            })
+            markers = this.getMarkers()
 
-        if (activeGeometry){
+        if (activeGeometry) {
             this._rbush.insert(this.getMarkerBox(activeGeometry))
             activeGeometry.show()
         }
 
         markers.forEach(marker => {
-            if (activeGeometry === marker){
+            if (activeGeometry === marker) {
                 return
             }
 
@@ -54,9 +64,11 @@ export class CollisionLayer extends maptalks.VectorLayer {
             }
         })
 
-        if (hidePointsSymbol){
-            this._hideMarkers = new maptalks.MultiPoint(hidePoints, {symbol: hidePointsSymbol}).addTo(this)
-            this._hideMarkers.bringToBack()
+        if (isShowCollisionPoints){
+            this._hidePoints.setCoordinates(hidePoints)
+            this._hidePoints.bringToBack()
+        }else{
+            this._hidePoints.setCoordinates([])
         }
     }
 
@@ -69,6 +81,50 @@ export class CollisionLayer extends maptalks.VectorLayer {
             maxY = Math.round(y + height / 2)
 
         return {minX, maxX, minY, maxY}
+    }
+
+    getMarkers(){
+        return this.getGeometries(geometry => {
+            return geometry.type === 'Point' && geometry
+        })
+    }
+
+    isShowCollisionPoints(){
+        return this.options.isShowCollisionPoints
+    }
+
+    showCollisionPoints(){
+        this.options.isShowCollisionPoints = true
+        this.updateCollision()
+    }
+
+    hideCollisionPoints(){
+        this.options.isShowCollisionPoints = false
+        this.updateCollision()
+    }
+
+    setActiveId(id){
+        this.options.activeId = id
+        this.updateCollision()
+    }
+
+    enableCollision(){
+        this.options.isCollision = true
+        this.updateCollision()
+    }
+
+    disableCollision(){
+        this.options.isCollision = false
+
+        this._hidePoints.setCoordinates([])
+        const markers = this.getMarkers()
+        markers.forEach(marker=>{
+            marker.show()
+        })
+    }
+
+    isCollision(){
+        return this.options.isCollision
     }
 }
 

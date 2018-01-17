@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://unpkg.com/maptalks/dist/maptalks.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks@0.37.0/dist/maptalks.css">
     <style>
         #map{
             position: fixed;
@@ -12,12 +12,20 @@
             top: 0;
             bottom: 0;
         }
+        .pane{background:#34495e;line-height:28px;color:#fff;z-index:10;position:absolute;top:20px;right:20px}
+        .pane a{display:block;color:#fff;text-align:left;padding:0 10px;min-width:28px;min-height:28px;float:left}
     </style>
 </head>
 <body>
     <div id="map"></div>
-    <script src="https://unpkg.com/maptalks/dist/maptalks.js"></script>
-    <script src="https://unpkg.com/rbush/rbush.js"></script>
+    <div class="pane">
+        <a href="javascript:enableCollision();">Enable Collision</a>
+        <a href="javascript:disableCollision();">disable Collision</a>
+        <a href="javascript:showCollisionPoints();">show collision points</a>
+        <a href="javascript:hideCollisionPoints();">hide collision points</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/maptalks@0.37.0/dist/maptalks.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/rbush@2.0.2/rbush.js"></script>
     <script src="../dist/maptalks.collisionLayer.js"></script>
     <script src="demo.js"></script>
 </body>

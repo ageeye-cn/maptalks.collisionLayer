@@ -16,7 +16,23 @@ A marker collision plugin for [maptalks](http://maptalks.org/) and uses [rbush](
 Option | Type | Default
 ------ | ---- | -------
 `activeId` | String | ```null```
+`isCollision` | Boolean | ```true```
+`isShowCollisionPoints` | Boolean | ```true```
+`hidePointsId` | String | ```hidePoints```
 `hidePointsSymbol` | Object | ```{'markerType': 'ellipse','markerFillOpacity': 0.3,'markerLineOpacity': 0.3,'markerWidth': 3,'markerHeight': 3,}```
+
+# Methods
+
+Method | Return | Description
+------ | ---- | -------
+`updateCollision()` |  | 
+`setActiveId(<String> id)` |  | 
+`isShowCollisionPoints()` | Boolean | 
+`showCollisionPoints()` |  | 
+`hideCollisionPoints()` |  | 
+`enableCollision()` |  | 
+`disableCollision()` |  | 
+`isCollision()` | Boolean | 
 
 # License
 

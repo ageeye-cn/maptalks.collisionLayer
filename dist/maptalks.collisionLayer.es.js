@@ -1,7 +1,7 @@
 /*!
- * maptalks.collisionLayer v0.1.1
+ * maptalks.collisionLayer v0.2.0
  * LICENSE : MIT
- * (c) 2016-2017 maptalks.org
+ * (c) 2016-2018 maptalks.org
  */
 /*!
  * requires maptalks@>=0.36.0 
@@ -19,6 +19,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var options = {
     activeId: null,
+    isCollision: true,
+    isShowCollisionPoints: true,
+    hidePointsId: 'hidePoints',
     hidePointsSymbol: {
         'markerType': 'ellipse',
         'markerFillOpacity': 0.3,
@@ -40,7 +43,7 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
     CollisionLayer.prototype.onAdd = function onAdd() {
         this.map.on('viewchange', this.onViewChange, this);
         this._rbush = rbush();
-        this._hideMarkers = null;
+        this._hidePoints = new MultiPoint([], { id: this.options.hidePointsId, symbol: this.options.hidePointsSymbol });
     };
 
     CollisionLayer.prototype.onViewChange = function onViewChange() {
@@ -54,17 +57,22 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
     CollisionLayer.prototype.updateCollision = function updateCollision() {
         var _this3 = this;
 
+        if (!this.options.isCollision) {
+            return;
+        }
+
+        if (!this.getGeometryById(this.options.hidePointsId)) {
+            this.addGeometry(this._hidePoints);
+        }
+
         this._rbush.clear();
-        this._hideMarkers && this._hideMarkers.remove();
 
         var hidePoints = [],
             _options = this.options,
             activeId = _options.activeId,
-            hidePointsSymbol = _options.hidePointsSymbol,
+            isShowCollisionPoints = _options.isShowCollisionPoints,
             activeGeometry = this.getGeometryById(activeId),
-            markers = this.getGeometries(function (geometry) {
-            return geometry.type === 'Point' && geometry;
-        });
+            markers = this.getMarkers();
 
 
         if (activeGeometry) {
@@ -89,9 +97,11 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
             }
         });
 
-        if (hidePointsSymbol) {
-            this._hideMarkers = new MultiPoint(hidePoints, { symbol: hidePointsSymbol }).addTo(this);
-            this._hideMarkers.bringToBack();
+        if (isShowCollisionPoints) {
+            this._hidePoints.setCoordinates(hidePoints);
+            this._hidePoints.bringToBack();
+        } else {
+            this._hidePoints.setCoordinates([]);
         }
     };
 
@@ -110,6 +120,50 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
         return { minX: minX, maxX: maxX, minY: minY, maxY: maxY };
     };
 
+    CollisionLayer.prototype.getMarkers = function getMarkers() {
+        return this.getGeometries(function (geometry) {
+            return geometry.type === 'Point' && geometry;
+        });
+    };
+
+    CollisionLayer.prototype.isShowCollisionPoints = function isShowCollisionPoints() {
+        return this.options.isShowCollisionPoints;
+    };
+
+    CollisionLayer.prototype.showCollisionPoints = function showCollisionPoints() {
+        this.options.isShowCollisionPoints = true;
+        this.updateCollision();
+    };
+
+    CollisionLayer.prototype.hideCollisionPoints = function hideCollisionPoints() {
+        this.options.isShowCollisionPoints = false;
+        this.updateCollision();
+    };
+
+    CollisionLayer.prototype.setActiveId = function setActiveId(id) {
+        this.options.activeId = id;
+        this.updateCollision();
+    };
+
+    CollisionLayer.prototype.enableCollision = function enableCollision() {
+        this.options.isCollision = true;
+        this.updateCollision();
+    };
+
+    CollisionLayer.prototype.disableCollision = function disableCollision() {
+        this.options.isCollision = false;
+
+        this._hidePoints.setCoordinates([]);
+        var markers = this.getMarkers();
+        markers.forEach(function (marker) {
+            marker.show();
+        });
+    };
+
+    CollisionLayer.prototype.isCollision = function isCollision() {
+        return this.options.isCollision;
+    };
+
     return CollisionLayer;
 }(VectorLayer);
 
@@ -117,4 +171,4 @@ CollisionLayer.mergeOptions(options);
 
 export { CollisionLayer };
 
-typeof console !== 'undefined' && console.log('maptalks.collisionLayer v0.1.1, requires maptalks@>=0.36.0.');
+typeof console !== 'undefined' && console.log('maptalks.collisionLayer v0.2.0, requires maptalks@>=0.36.0.');
