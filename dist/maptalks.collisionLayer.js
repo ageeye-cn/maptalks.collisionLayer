@@ -84,7 +84,10 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
 
 
         if (activeGeometry && activeGeometry.type === 'Point') {
-            this._rbush.insert(this.getMarkerBox(activeGeometry));
+            var box = this.getMarkerBox(activeGeometry);
+            if (box) {
+                this._rbush.insert(box);
+            }
             activeGeometry.show();
         }
 
@@ -95,6 +98,11 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
 
             var box = _this3.getMarkerBox(marker),
                 result = _this3._rbush.search(box);
+
+            if (!box) {
+                return;
+                marker.show();
+            }
 
             if (result.length === 0) {
                 _this3._rbush.insert(box);
@@ -114,9 +122,14 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
     };
 
     CollisionLayer.prototype.getMarkerBox = function getMarkerBox(marker) {
-        var _marker$getSize = marker.getSize(),
-            width = _marker$getSize.width,
-            height = _marker$getSize.height,
+        var size = marker.getSize();
+
+        if (!size) {
+            return;
+        }
+
+        var width = size.width,
+            height = size.height,
             _map$coordinateToCont = this.map.coordinateToContainerPoint(marker.getCoordinates()),
             x = _map$coordinateToCont.x,
             y = _map$coordinateToCont.y,

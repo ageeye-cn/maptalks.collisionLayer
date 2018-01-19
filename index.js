@@ -46,7 +46,10 @@ export class CollisionLayer extends maptalks.VectorLayer {
             markers = this.getMarkers()
 
         if (activeGeometry && activeGeometry.type === 'Point') {
-            this._rbush.insert(this.getMarkerBox(activeGeometry))
+            const box = this.getMarkerBox(activeGeometry)
+            if (box){
+                this._rbush.insert(box)
+            }
             activeGeometry.show()
         }
 
@@ -57,6 +60,11 @@ export class CollisionLayer extends maptalks.VectorLayer {
 
             const box = this.getMarkerBox(marker),
                 result = this._rbush.search(box)
+
+            if (!box){
+                return
+                marker.show()
+            }
 
             if (result.length === 0) {
                 this._rbush.insert(box)
@@ -76,8 +84,20 @@ export class CollisionLayer extends maptalks.VectorLayer {
     }
 
     getMarkerBox(marker) {
-        const {width, height} = marker.getSize(),
-            {x, y} = this.map.coordinateToContainerPoint(marker.getCoordinates()),
+        const size = marker.getSize()
+
+        if (!size){
+            return
+        }
+
+        const  {width, height} = size,
+            coordinates = marker.getCoordinates()
+
+        if (!coordinates){
+            return
+        }
+
+        const  {x, y} = this.map.coordinateToContainerPoint(marker.getCoordinates()),
             minX = Math.round(x - width / 2),
             maxX = Math.round(x + width / 2),
             minY = Math.round(y - height / 2),
