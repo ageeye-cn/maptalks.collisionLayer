@@ -19,7 +19,7 @@ var extent = map.getExtent(),
     w = extent.getWidth(),
     h = extent.getHeight(),
     markers = [];
-for (var i = 0; i < 100; i++) {
+for (var i = 0; i < 1000; i++) {
     markers.push(new maptalks.Marker([min.x + Math.random() * w, min.y + Math.random() * h]));
 }
 

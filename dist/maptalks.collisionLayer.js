@@ -1,5 +1,5 @@
 /*!
- * maptalks.collisionLayer v0.2.0
+ * maptalks.collisionLayer v0.2.2
  * LICENSE : MIT
  * (c) 2016-2018 maptalks.org
  */
@@ -96,13 +96,14 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
                 return;
             }
 
-            var box = _this3.getMarkerBox(marker),
-                result = _this3._rbush.search(box);
+            var box = _this3.getMarkerBox(marker);
 
             if (!box) {
-                return;
                 marker.show();
+                return;
             }
+
+            var result = _this3._rbush.search(box);
 
             if (result.length === 0) {
                 _this3._rbush.insert(box);
@@ -130,7 +131,14 @@ var CollisionLayer = function (_maptalks$VectorLayer) {
 
         var width = size.width,
             height = size.height,
-            _map$coordinateToCont = this.map.coordinateToContainerPoint(marker.getCoordinates()),
+            coordinates = marker.getCoordinates();
+
+
+        if (!coordinates) {
+            return;
+        }
+
+        var _map$coordinateToCont = this.map.coordinateToContainerPoint(marker.getCoordinates()),
             x = _map$coordinateToCont.x,
             y = _map$coordinateToCont.y,
             minX = Math.round(x - width / 2),
@@ -194,6 +202,6 @@ exports.CollisionLayer = CollisionLayer;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.collisionLayer v0.2.0, requires maptalks@>=0.36.0.');
+typeof console !== 'undefined' && console.log('maptalks.collisionLayer v0.2.2, requires maptalks@>=0.36.0.');
 
 })));

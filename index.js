@@ -58,13 +58,14 @@ export class CollisionLayer extends maptalks.VectorLayer {
                 return
             }
 
-            const box = this.getMarkerBox(marker),
-                result = this._rbush.search(box)
+            const box = this.getMarkerBox(marker)
 
             if (!box){
-                return
                 marker.show()
+                return
             }
+
+            const result = this._rbush.search(box)
 
             if (result.length === 0) {
                 this._rbush.insert(box)
