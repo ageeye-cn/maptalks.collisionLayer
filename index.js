@@ -153,3 +153,5 @@ export class CollisionLayer extends maptalks.VectorLayer {
 }
 
 CollisionLayer.mergeOptions(options);
+
+CollisionLayer.registerJSONType('CollisionLayer');
